@@ -5,8 +5,16 @@ const promises = require('./synchronicity/promises');
 
 console.log('Avant');
 
-promises.getRandomNumber("test")
-.then(data => console.log(`Résultat : ${data}`))
+promises.getRandomNumber(11, (err, result) => {
+    if(err) {
+        console.error(`Erreur : ${err.message}`);
+        return;
+    }
+    console.log(`Résultat avec callback : ${result}`)
+})
+
+promises.getRandomNumber(11)
+.then(data => console.log(`Résultat avec promise : ${data}`))
 .catch(error => console.error(`Erreur : ${error.message}`));
 
 console.log('Après');
