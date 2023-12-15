@@ -1,9 +1,20 @@
 const synchronous = require('./synchronicity/synchronous');
-const asynchronous = require('./synchronicity/asynchronous_1')
+const asynchronous = require('./synchronicity/asynchronous_1');
+const promises = require('./synchronicity/promises');
+
 
 console.log('Avant');
 
-asynchronous.getRandomNumber(5, (err,res) => {
+promises.getRandomNumber("test")
+.then(data => console.log(`Résultat : ${data}`))
+.catch(error => console.error(`Erreur : ${error.message}`));
+
+console.log('Après');
+
+/* 
+console.log('Avant');
+
+asynchronous.getRandomNumber(10, (err,res) => {
     if (err) throw err;
     console.log(`Nombre généré par getRandomNumber(): ${res}`);
 });
@@ -18,8 +29,12 @@ console.log(`Résultat de add(2, 5) : ${result}`);
 })
 
 console.log('Après');
- 
-/** 
+*/
+
+/*
+
+Code synchrone
+
 console.log('Avant setInterval')
 
 let i = 0
@@ -39,4 +54,4 @@ const handle = setInterval(() => {
 console.log('Après setInterval');
 console.log('Hello World');
 
-**/
+*/
