@@ -65,6 +65,8 @@ console.log('Hello World');
 
 */
 
+/* EventEmitter
+
 const EventEmitter = require('events').EventEmitter;
 
 const programmer = new EventEmitter();
@@ -91,3 +93,24 @@ programmer.on('drinkCoffee', increaseInsomnia);
 programmer.emit('drinkCoffee');
 programmer.emit('drinkCoffee', 'Café brésilien');
 programmer.emit('drinkCoffee', 'Café chocolaté');
+
+*/
+
+/* Les eventemitter peuvent être mis partout, à la connexion d'un DB, à l'ouverture d'un document, à l'écriture sur le terminal, etc.
+
+process.stdin.on('data', (data) => {
+    console.log(data.toString());
+});
+
+*/
+
+const ShoppingList = require('./events/ShoppingList');
+
+const myShoppingList = new ShoppingList();
+
+myShoppingList.on('added', (data) => {
+    console.log('Liste après ajout de cet article : ', data);
+});
+
+myShoppingList.add('camembert');
+myShoppingList.add('haricots');
