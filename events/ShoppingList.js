@@ -8,6 +8,9 @@ class ShoppingList extends EventEmitter {
     add(item) {
         this.list = [...this.list, item];
         this.emit('added', this.list);
+        if(item.includes('surgelé')) {
+            this.emit('bringFreezerBag', 'le sac rouge')
+        }
     }
 }
 
