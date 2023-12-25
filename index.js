@@ -104,6 +104,8 @@ process.stdin.on('data', (data) => {
 
 */
 
+/* Classes EventEmitter
+
 const ShoppingList = require('./events/ShoppingList');
 
 const myShoppingList = new ShoppingList();
@@ -128,3 +130,30 @@ myShoppingList.add('eau minéral');
 myShoppingList.add('poisson surgelé');
 myShoppingList.add('cocaïne');
 myShoppingList.add('steacks hachés surgelés');
+
+*/
+
+const EventEmitter = require('events').EventEmitter;
+
+const getBook = function() {
+    const ee = new EventEmitter();
+    setImmediate(() => {
+        ee.emit('searchBookStarted');
+    })
+    const searchDuration = Math.floor(Math.random() * 5 * 1000);
+    setTimeout(() => {
+        const book = { title: 'super titre', author: 'super auteur'};
+        ee.emit('bookFound', book);
+    }, searchDuration);
+    return ee;
+};
+
+const desiredBook = getBook();
+
+desiredBook.on('searchBookStarted', function() {
+    console.log('La recherche du livre a commencé');
+});
+
+desiredBook.on('bookFound', function(data) {
+    console.log(`livre trouvé ${JSON.stringify(data)}`);
+});
