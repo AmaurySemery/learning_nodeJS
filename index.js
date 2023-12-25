@@ -69,8 +69,25 @@ const EventEmitter = require('events').EventEmitter;
 
 const programmer = new EventEmitter();
 
+let energy = 5;
+let insomniaRisk = 0;
+
 programmer.on('drinkCoffee', function () {
     console.log('Coup de fouet');
 });
 
+programmer.on('drinkCoffee', function (coffee = 'café noir') {
+    console.log(`Après avoir bu un ${coffee}, le programmeur se réveille`);
+    console.log(`Niveau d'énergie = ${++energy}`);
+});
+
+const increaseInsomnia = () => {
+    insomniaRisk = insomniaRisk + 1;
+    console.log(`Le risque d'insomnie a augmenté et se trouve au niveau ${insomniaRisk}`);
+}
+
+programmer.on('drinkCoffee', increaseInsomnia);
+
 programmer.emit('drinkCoffee');
+programmer.emit('drinkCoffee', 'Café brésilien');
+programmer.emit('drinkCoffee', 'Café chocolaté');
