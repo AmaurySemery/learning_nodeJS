@@ -112,6 +112,10 @@ myShoppingList.on('added', (data) => {
     console.log('Liste après ajout de cet article : ', data);
 });
 
+myShoppingList.on('error', (error) => {
+    console.log(`error : ${error}`);
+});
+
 // once quand on veut que ce ne soit fait qu'une seule fois
 
 myShoppingList.once('bringFreezerBag', (data) => {
@@ -122,4 +126,5 @@ myShoppingList.add('camembert');
 myShoppingList.add('haricots verts surgelés');
 myShoppingList.add('eau minéral');
 myShoppingList.add('poisson surgelé');
+myShoppingList.add('cocaïne');
 myShoppingList.add('steacks hachés surgelés');

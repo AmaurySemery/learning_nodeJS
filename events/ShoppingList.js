@@ -6,11 +6,15 @@ class ShoppingList extends EventEmitter {
         this.list = [];
     }
     add(item) {
-        this.list = [...this.list, item];
         this.emit('added', this.list);
         if(item.includes('surgelé')) {
-            this.emit('bringFreezerBag', 'le sac rouge')
+            this.emit('bringFreezerBag', 'le sac rouge');
         }
+        if (item.includes('cocaïne')) {
+            this.emit('error', new Error('Ce produit prohibé ne peut pas être ajouté à la liste'));
+            return;
+        }
+        this.list = [...this.list, item];
     }
 }
 
