@@ -1,3 +1,4 @@
+/*
 const synchronous = require('./synchronicity/synchronous');
 const asynchronous = require('./synchronicity/asynchronous_1');
 const promises = require('./synchronicity/promises');
@@ -18,7 +19,7 @@ promises.getRandomNumber(11)
 .catch(error => console.error(`Erreur : ${error.message}`));
 
 console.log('Après');
-
+*/
 /* 
 console.log('Avant');
 
@@ -63,3 +64,13 @@ console.log('Après setInterval');
 console.log('Hello World');
 
 */
+
+const EventEmitter = require('events').EventEmitter;
+
+const programmer = new EventEmitter();
+
+programmer.on('drinkCoffee', function () {
+    console.log('Coup de fouet');
+});
+
+programmer.emit('drinkCoffee');
