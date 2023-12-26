@@ -18,19 +18,28 @@
 
 // writable stream (le verser quelque part)
 
-const { createWriteStream, createReadStream } = require('fs');
+// const { createWriteStream, createReadStream } = require('fs');
 
-const readStream = createReadStream('./fruits.txt');
-const writeStream = createWriteStream('./fruits_copy.txt');
+// const readStream = createReadStream('./fruits.txt');
+// const writeStream = createWriteStream('./fruits_copy.txt');
 
-readStream.on('data', (chunk) => {
-    writeStream.write(chunk);
-});
+// readStream.on('data', (chunk) => {
+//     writeStream.write(chunk);
+// });
 
-readStream.on('error', (error) => {
-    console.log('erreur : ', error.message);
-});
+// readStream.on('error', (error) => {
+//     console.log('erreur : ', error.message);
+// });
 
-readStream.on('end', () => {
-    writeStream.end();
-});
+// readStream.on('end', () => {
+//     writeStream.end();
+// });
+
+const { createWriteStream} = require('fs');
+const writeStream = createWriteStream('./massif.txt');
+
+for (let i = 0 ; i <= 1e5; i++) {
+    writeStream.write(`${i} - je me répète mais je ne suis pas fou\n`);
+};
+
+writeStream.end();
