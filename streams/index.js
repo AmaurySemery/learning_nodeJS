@@ -35,11 +35,19 @@
 //     writeStream.end();
 // });
 
-const { createWriteStream} = require('fs');
-const writeStream = createWriteStream('./massif.txt');
+// const { createWriteStream} = require('fs');
+// const writeStream = createWriteStream('./massif.txt');
 
-for (let i = 0 ; i <= 1e5; i++) {
-    writeStream.write(`${i} - je me répète mais je ne suis pas fou\n`);
-};
+// for (let i = 0 ; i <= 1e5; i++) {
+//     writeStream.write(`${i} - je me répète mais je ne suis pas fou\n`);
+// };
 
-writeStream.end();
+// writeStream.end();
+
+// process.stdin.pipe(process.stdout);
+
+const { createReadStream } = require('fs');
+
+// Affiche le contenu du fichier dans la console
+
+createReadStream('./fruits.txt').pipe(process.stdout);
