@@ -18,7 +18,6 @@
 
 // writable stream (le verser quelque part)
 
-const { error } = require('console');
 const { createWriteStream, createReadStream } = require('fs');
 
 const readStream = createReadStream('./fruits.txt');
