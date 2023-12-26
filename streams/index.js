@@ -50,4 +50,8 @@ const { createReadStream } = require('fs');
 
 // Affiche le contenu du fichier dans la console
 
-createReadStream('./fruits.txt').pipe(process.stdout);
+// createReadStream('./fruits.txt').pipe(process.stdout);
+
+// Taper par exemple "node index fruits.txt"
+
+createReadStream(process.argv[2]).pipe(process.stdout);
