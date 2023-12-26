@@ -18,6 +18,7 @@
 
 // writable stream (le verser quelque part)
 
+const { error } = require('console');
 const { createWriteStream, createReadStream } = require('fs');
 
 const readStream = createReadStream('./fruits.txt');
@@ -25,6 +26,10 @@ const writeStream = createWriteStream('./fruits_copy.txt');
 
 readStream.on('data', (chunk) => {
     writeStream.write(chunk);
+});
+
+readStream.on('error', (error) => {
+    console.log('erreur : ', error.message);
 });
 
 readStream.on('end', () => {
