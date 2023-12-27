@@ -1,4 +1,2 @@
-pommes
-poires
-bananes
-oranges
+fraise
+groseilles

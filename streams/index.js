@@ -92,25 +92,31 @@
 // const cw = new CustomWritable();
 // streamText.pipe(cw);
 
+// const { createReadStream, createWriteStream } = require('fs');
+
+// const myReadStream = createReadStream('./massif.txt');
+// const myWriteStream = createWriteStream('./massif_copie.txt', {
+//     highWaterMark: 512
+// });
+
+// let nbOfPauses = 0
+
+// myReadStream.on('data', (chunk) => {
+//     const isReadyToWriteMoreData = myWriteStream.write(chunk);
+//     if(!isReadyToWriteMoreData) {
+//         nbOfPauses = nbOfPauses + 1;
+//         console.log('Trop de données poussées pour moi', nbOfPauses);
+//         myReadStream.pause();
+//     }
+// });
+
+// myWriteStream.on('drain', () => {
+//     console.log('De nouveau prêt à écrire');
+//     myReadStream.resume();
+// });
+
 const { createReadStream, createWriteStream } = require('fs');
 
-const myReadStream = createReadStream('./massif.txt');
-const myWriteStream = createWriteStream('./massif_copie.txt', {
-    highWaterMark: 512
-});
-
-let nbOfPauses = 0
-
-myReadStream.on('data', (chunk) => {
-    const isReadyToWriteMoreData = myWriteStream.write(chunk);
-    if(!isReadyToWriteMoreData) {
-        nbOfPauses = nbOfPauses + 1;
-        console.log('Trop de données poussées pour moi', nbOfPauses);
-        myReadStream.pause();
-    }
-});
-
-myWriteStream.on('drain', () => {
-    console.log('De nouveau prêt à écrire');
-    myReadStream.resume();
-})
+const myWriteStream = createWriteStream('fruits.txt');
+// createReadStream('fruits.txt').pipe(process.stdout);
+process.stdin.pipe(myWriteStream);
