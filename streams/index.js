@@ -46,7 +46,7 @@
 
 // process.stdin.pipe(process.stdout);
 
-const { createReadStream } = require('fs');
+// const { createReadStream } = require('fs');
 
 // Affiche le contenu du fichier dans la console
 
@@ -54,4 +54,28 @@ const { createReadStream } = require('fs');
 
 // Taper par exemple "node index fruits.txt"
 
-createReadStream(process.argv[2]).pipe(process.stdout);
+// createReadStream(process.argv[2]).pipe(process.stdout);
+
+const { Readable } = require('stream');
+
+const text = `Gros test
+sur plusieurs
+déjà la fin`;
+
+class StreamText extends Readable {
+    constructor(text){
+        super();
+        this.text = text;
+        this.sentences = text.split('\n');
+    }
+    _read() {
+        this.sentences.map(data => {
+            this.push(data);
+        });
+        this.push(null);
+    }
+} // class end
+
+const streamText = new StreamText(text);
+streamText.on('data', (chunk) => console.log(chunk.toString()));
+streamText.on('end', () => console.log('lecture terminée'));
