@@ -77,5 +77,17 @@ class StreamText extends Readable {
 } // class end
 
 const streamText = new StreamText(text);
-streamText.on('data', (chunk) => console.log(chunk.toString()));
-streamText.on('end', () => console.log('lecture terminée'));
+// streamText.on('data', (chunk) => console.log(chunk.toString()));
+// streamText.on('end', () => console.log('lecture terminée'));
+
+const { Writable } = require('stream');
+
+class CustomWritable extends Writable {
+    _write(chunk, encoding, next) {
+        console.log(chunk.toString().trim().toUpperCase());
+        next();
+    }
+}
+
+const cw = new CustomWritable();
+streamText.pipe(cw);
