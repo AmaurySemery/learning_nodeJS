@@ -56,38 +56,56 @@
 
 // createReadStream(process.argv[2]).pipe(process.stdout);
 
-const { Readable } = require('stream');
+// const { Readable } = require('stream');
 
-const text = `Gros test
-sur plusieurs
-déjà la fin`;
+// const text = `Gros test
+// sur plusieurs
+// déjà la fin`;
 
-class StreamText extends Readable {
-    constructor(text){
-        super();
-        this.text = text;
-        this.sentences = text.split('\n');
-    }
-    _read() {
-        this.sentences.map(data => {
-            this.push(data);
-        });
-        this.push(null);
-    }
-} // class end
+// class StreamText extends Readable {
+//     constructor(text){
+//         super();
+//         this.text = text;
+//         this.sentences = text.split('\n');
+//     }
+//     _read() {
+//         this.sentences.map(data => {
+//             this.push(data);
+//         });
+//         this.push(null);
+//     }
+// } // class end
 
-const streamText = new StreamText(text);
+// const streamText = new StreamText(text);
 // streamText.on('data', (chunk) => console.log(chunk.toString()));
 // streamText.on('end', () => console.log('lecture terminée'));
 
-const { Writable } = require('stream');
+// const { Writable } = require('stream');
 
-class CustomWritable extends Writable {
-    _write(chunk, encoding, next) {
-        console.log(chunk.toString().trim().toUpperCase());
-        next();
+// class CustomWritable extends Writable {
+//     _write(chunk, encoding, next) {
+//         console.log(chunk.toString().trim().toUpperCase());
+//         next();
+//     }
+// }
+
+// const cw = new CustomWritable();
+// streamText.pipe(cw);
+
+const { createReadStream, createWriteStream } = require('fs');
+
+const myReadStream = createReadStream('./massif.txt');
+const myWriteStream = createWriteStream('./massif_copie.txt');
+
+myReadStream.on('data', (chunk) => {
+    const isReadyToWriteMoreData = myWriteStream.write(chunk);
+    if(!isReadyToWriteMoreData) {
+        console.log('Trop de données poussées pour moi');
+        myReadStream.pause();
     }
-}
+});
 
-const cw = new CustomWritable();
-streamText.pipe(cw);
+myWriteStream.on('drain', () => {
+    console.log('De nouveau prêt à écrire');
+    myReadStream.resume();
+})
