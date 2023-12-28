@@ -124,18 +124,42 @@
 // readable -> duplex / transform / passthrough / ... -> writable
 // readable -> transform -> writable (exemple compression de fichiers)
 
-const { Transform } = require('stream');
+// const { Transform } = require('stream');
 
-class Slugify extends Transform {
-    _transform(chunk, encoding, next) {
-        const slug = chunk.toString().trim().replace(/\s+/g, '-');
-        this.push(slug + '\n');
-        next();
-    }
-    _flush(next) {
-        console.log('bye bye');
-    }
-} // class end
+// class Slugify extends Transform {
+//     _transform(chunk, encoding, next) {
+//         const slug = chunk.toString().trim().replace(/\s+/g, '-');
+//         this.push(slug + '\n');
+//         next();
+//     }
+//     _flush(next) {
+//         console.log('bye bye');
+//     }
+// } // class end
 
-const slugify = new Slugify();
-process.stdin.pipe(slugify).pipe(process.stdout);
+// const slugify = new Slugify();
+// process.stdin.pipe(slugify).pipe(process.stdout);
+
+// create big file
+
+// const fs = require('fs');
+// const file = fs.createWriteStream('./big.txt');
+
+// for(let i=0; i<= 100; i++) {
+//     file.write(`${i} - je me répète mais je ne suis pas fou\n`);
+// }
+
+// file.end();
+
+const { createReadStream, createWriteStream } = require('fs');
+const { PassThrough } = require('stream');
+
+const myReadStream = createReadStream('./big.txt');
+const myPassThrough = new PassThrough();
+let total = 0;
+myPassThrough.on('data', (chunk) => {
+    total += chunk.length;
+    console.log(`${total} octets`)
+});
+
+myReadStream.pipe(myPassThrough).pipe(process.stdout);
