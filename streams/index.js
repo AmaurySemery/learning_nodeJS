@@ -115,8 +115,27 @@
 //     myReadStream.resume();
 // });
 
-const { createReadStream, createWriteStream } = require('fs');
+// const { createReadStream, createWriteStream } = require('fs');
 
-const myWriteStream = createWriteStream('fruits.txt');
+// const myWriteStream = createWriteStream('fruits.txt');
 // createReadStream('fruits.txt').pipe(process.stdout);
-process.stdin.pipe(myWriteStream);
+// process.stdin.pipe(myWriteStream);
+
+// readable -> duplex / transform / passthrough / ... -> writable
+// readable -> transform -> writable (exemple compression de fichiers)
+
+const { Transform } = require('stream');
+
+class Slugify extends Transform {
+    _transform(chunk, encoding, next) {
+        const slug = chunk.toString().trim().replace(/\s+/g, '-');
+        this.push(slug + '\n');
+        next();
+    }
+    _flush(next) {
+        console.log('bye bye');
+    }
+} // class end
+
+const slugify = new Slugify();
+process.stdin.pipe(slugify).pipe(process.stdout);
