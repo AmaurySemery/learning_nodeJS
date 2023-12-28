@@ -164,8 +164,36 @@
 
 // myReadStream.pipe(myPassThrough).pipe(process.stdout);
 
-const net = require('net');
+// const net = require('net');
 
-net.createServer(function(stream) {
-    stream.pipe(stream);
-}).listen(5000);
+// net.createServer(function(stream) {
+//     stream.pipe(stream);
+// }).listen(5000);
+
+const { Readable } = require('stream');
+
+const text = `Gros test
+sur plusieurs
+déjà la fin`;
+
+class StreamText extends Readable {
+    constructor(text){
+        super({ objectMode: true });
+        this.text = text;
+        this.sentences = text.split('\n');
+    }
+    _read() {
+        this.sentences.map(data => {
+            const obj = {
+                data: data,
+                length: data.length
+            };
+            this.push(obj);
+        });
+        this.push(null);
+    }
+} // class end
+
+const streamText = new StreamText(text);
+streamText.on('data', (chunk) => console.log(JSON.stringify(chunk)));
+streamText.on('end', () => console.log('lecture terminée'));
