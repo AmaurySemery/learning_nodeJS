@@ -151,15 +151,21 @@
 
 // file.end();
 
-const { createReadStream, createWriteStream } = require('fs');
-const { PassThrough } = require('stream');
+// const { createReadStream, createWriteStream } = require('fs');
+// const { PassThrough } = require('stream');
 
-const myReadStream = createReadStream('./big.txt');
-const myPassThrough = new PassThrough();
-let total = 0;
-myPassThrough.on('data', (chunk) => {
-    total += chunk.length;
-    console.log(`${total} octets`)
-});
+// const myReadStream = createReadStream('./big.txt');
+// const myPassThrough = new PassThrough();
+// let total = 0;
+// myPassThrough.on('data', (chunk) => {
+//     total += chunk.length;
+//     console.log(`${total} octets`)
+// });
 
-myReadStream.pipe(myPassThrough).pipe(process.stdout);
+// myReadStream.pipe(myPassThrough).pipe(process.stdout);
+
+const net = require('net');
+
+net.createServer(function(stream) {
+    stream.pipe(stream);
+}).listen(5000);
