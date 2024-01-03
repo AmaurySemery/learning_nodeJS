@@ -198,8 +198,54 @@
 // streamText.on('data', (chunk) => console.log(JSON.stringify(chunk)));
 // streamText.on('end', () => console.log('lecture terminée'));
 
+// Sans streams
+
+// const http = require('http');
+// const fs = require('fs');
+// const videoPath = './videos/test.mp4'
+
+// const server = http.createServer();
+
+// server.on('request', (req, res) => {
+//     if (req.url === '/favicon') return;
+//     if (req.url === '/contact') {
+//         memoryUsageInMegaBytes(`Route ${req.url}`);
+//         res.end('Contactez moi');
+//     }
+//     else if (req.url === '/videos') {
+//         fs.readFile(videoPath, (error, data) => {
+//             memoryUsageInMegaBytes(`Route ${req.url}`);
+//             if (error) {
+//                 console.error(`Echec de la lecture ${error.message}`);
+//             }
+//             res.writeHead(200, { 'Content-Type': 'video/mp4'});
+//             res.end(data);
+//         })
+//     } else {
+//         memoryUsageInMegaBytes(`Route ${req.url}`);
+//         res.end(`Sur la page ${req.url}`);
+//     }
+// });
+
+// const port = 3000;
+// server.listen(port, () => {
+//     console.log(`Serveur sur port ${port}`);
+// });
+
+// function memoryUsageInMegaBytes (pageUrl) {
+//     const used = process.memoryUsage();
+//     console.log(`==== ${pageUrl} ====`);
+//     for (let key in used) {
+//         console.log(`${key} ${Math.round(used[key] / 1024 / 1024 ) * 100} Mo`);
+//     }
+//     console.log(`==== ${pageUrl} end ====\n\n`);
+// }
+
+// Avec streams
+
 const http = require('http');
 const fs = require('fs');
+const { createReadStream } = require('fs');
 const videoPath = './videos/test.mp4'
 
 const server = http.createServer();
@@ -211,14 +257,10 @@ server.on('request', (req, res) => {
         res.end('Contactez moi');
     }
     else if (req.url === '/videos') {
-        fs.readFile(videoPath, (error, data) => {
-            memoryUsageInMegaBytes(`Route ${req.url}`);
-            if (error) {
-                console.error(`Echec de la lecture ${error.message}`);
-            }
-            res.writeHead(200, { 'Content-Type': 'video/mp4'});
-            res.end(data);
-        })
+        const myReadStream = createReadStream(videoPath);
+        res.writeHead(200, { 'Content-Type': 'video/mp4'});
+        myReadStream.pipe(res);
+        memoryUsageInMegaBytes(`Route ${req.url}`);
     } else {
         memoryUsageInMegaBytes(`Route ${req.url}`);
         res.end(`Sur la page ${req.url}`);
